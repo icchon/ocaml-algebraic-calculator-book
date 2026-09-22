@@ -16,9 +16,9 @@ sudo apt install opam   # Debian/Ubuntu(Windowsの場合はWSL上で実行)
 
 ```sh
 opam init
-opam switch create default 5.2.1
+opam switch create default 5.5.1
 eval $(opam env)
-ocaml -version   # => The OCaml toplevel, version 5.2.1
+ocaml -version   # => The OCaml toplevel, version 5.5.1
 ```
 
 ```sh
