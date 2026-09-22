@@ -96,7 +96,7 @@ let fn (name: string) (args: t list): t = Fn (name, args)
    親の中に置ける範囲が広い *)
 let rec render ?(min_prec = 0) (e: t): string =
   let wrap (prec: int) (s: string): string =
-    if prec < min_prec then "(" ^ s ^ ")" else s
+    if prec < min_prec then "\\left(" ^ s ^ "\\right)" else s
   in
   match e with
   | Num n -> wrap 3 (string_of_int n)
@@ -111,7 +111,7 @@ let rec render ?(min_prec = 0) (e: t): string =
        常にかっこを付ける（precのしくみとは別に、ここだけ特別扱いする） *)
     let base_str = match base with
       | Num _ | Atom _ -> render ~min_prec:3 base
-      | _ -> "(" ^ render base ^ ")"
+      | _ -> "\\left(" ^ render base ^ "\\right)"
     in
     wrap 3 (Printf.sprintf "%s^{%s}" base_str (render exponent))
   | Fn (name, args) ->
@@ -280,7 +280,7 @@ let unop_to_string (type a)
       let e = M.to_expr x in
       let arg_str = match e with
         | Num _ | Atom _ -> render e
-        | _ -> "(" ^ render e ^ ")"
+        | _ -> "\\left(" ^ render e ^ "\\right)"
       in
       arg_str ^ op.u_symbol
   in
@@ -367,4 +367,4 @@ let call (name: string) (args: string list) (result: string): string =
 
 (* div_remのように、複数のExpr文字列を組として1つの結果にまとめたいときに使う *)
 let tuple (strs: string list): string =
-  "(" ^ String.concat ",\\ " strs ^ ")"
+  "\\left(" ^ String.concat ",\\ " strs ^ "\\right)"

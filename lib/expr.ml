@@ -4,8 +4,7 @@
    コンパイル単位になっている。-no-alias-depsでコンパイルすることで、
    「Expr.Quadraticを使わないプログラムは、expr_quadratic.mlが必要とする
    実体のQ_rootpモジュールさえリンク時に要求されない」という、単位ごとの
-   選択的リンクが効くようにしてある（詳しくはREADMEの「to_tex.cmxaの設計」を
-   参照） *)
+   選択的リンクが効くようにしてある *)
 include Expr_core
 module Integer = Expr_integer
 module Rational = Expr_rational
