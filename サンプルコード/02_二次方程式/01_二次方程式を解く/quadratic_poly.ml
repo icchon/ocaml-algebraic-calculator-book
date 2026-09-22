@@ -1,0 +1,1 @@
+include Polynomial.Make(Quadratic)
