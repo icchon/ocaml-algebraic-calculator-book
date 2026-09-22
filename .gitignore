@@ -34,7 +34,5 @@ _opam/
 
 # End of https://www.toptal.com/developers/gitignore/api/ocaml
 
-# 本書の `ocamlopt ... && ./a.out` の実行コマンド、環境構築章の
-# `ocamlopt sample.ml && ./a.out` などで生成される実行バイナリ
-a.out
+# 本書の `ocamlopt ... && ./a.out` の実行コマンドなどで生成される実行バイナリ
 *.out
