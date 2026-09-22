@@ -1,8 +1,7 @@
 module Elementary_expr = Expr.Elementary.Make (Q_rootp) (Quadratic) (Quadratic_poly) (Elementary)
 
-let check name p a =
+let check p a =
   let r = Elementary.integrate_log p a in
-  print_endline ("--- " ^ name ^ " ---");
   let integrand = Expr.product [
     Expr.Q_poly.to_expr p;
     Expr.fn "log" [Expr.sum [Expr.atom "x"; Expr.neg (Expr.Rational.to_expr a)]];
@@ -17,10 +16,10 @@ let check name p a =
 
 let () =
   (* log x (係数1) *)
-  check "log x" [Rational.one] (0, 1);
+  check [Rational.one] (0, 1);
 
   (* 3 log(x-2) (定数係数) *)
-  check "3 log(x-2)" [Rational.of_integer 3] (2, 1);
+  check [Rational.of_integer 3] (2, 1);
 
   (* x^2 log(x-1) (多項式係数) *)
-  check "x^2 log(x-1)" [Rational.zero; Rational.zero; Rational.one] (1, 1)
+  check [Rational.zero; Rational.zero; Rational.one] (1, 1)

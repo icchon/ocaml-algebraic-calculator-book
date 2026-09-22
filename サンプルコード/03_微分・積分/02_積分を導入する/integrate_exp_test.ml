@@ -1,8 +1,7 @@
 module Elementary_expr = Expr.Elementary.Make (Q_rootp) (Quadratic) (Quadratic_poly) (Elementary)
 
-let check name a p =
+let check a p =
   let r = Elementary.integrate_exp a p in
-  print_endline ("--- " ^ name ^ " ---");
   let integrand = Expr.product [
     Expr.Q_poly.to_expr p;
     Expr.pow (Expr.atom "e") (Expr.product [Expr.Rational.to_expr a; Expr.atom "x"]);
@@ -17,11 +16,11 @@ let check name a p =
 
 let () =
   (* ∫ x e^x dx = (x-1) e^x *)
-  check "x e^x" (1, 1) [Rational.of_integer 0; Rational.of_integer 1];
+  check (1, 1) [Rational.of_integer 0; Rational.of_integer 1];
 
   (* ∫ e^{2x} dx = (1/2) e^{2x} *)
-  check "e^{2x}" (2, 1) [Rational.of_integer 1];
+  check (2, 1) [Rational.of_integer 1];
 
   (* ∫ (x^2 - 1) e^{-x} dx *)
-  check "(x^2-1) e^{-x}" (-1, 1)
+  check (-1, 1)
     [Rational.of_integer (-1); Rational.of_integer 0; Rational.of_integer 1]
