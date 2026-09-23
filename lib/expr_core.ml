@@ -241,7 +241,7 @@ let call_unop (name: string) (apply: 'a -> 'a): 'a named_unop =
 let pow_unop (n: int) (apply: 'a -> 'a): 'a named_unop =
   { u_style = UPow n; u_symbol = ""; u_apply = apply }
 
-(* x' のような後置記号。微分をprime記法で見せるのに使う *)
+(* x' のような後置記号。微分をprime記法で表示するのに使う *)
 let postfix_unop (symbol: string) (apply: 'a -> 'a): 'a named_unop =
   { u_style = UPostfix; u_symbol = symbol; u_apply = apply }
 
@@ -328,7 +328,7 @@ let solve_to_string (type a) (type b)
 (* 多項式のevalだけに特化した表示。eval(p, a) = ... という汎用の関数呼び出し
    の形（callやbiop_to_stringを流用すると多項式全体が引数欄に書かれてしまい
    読みにくい）ではなく、まず p(x) = ... で多項式そのものを示し、続けて
-   p(a) = ... で代入結果だけを見せる。多項式の型 a と、評価点・結果の型 c は
+   p(a) = ... で代入結果だけを表示する。多項式の型 a と、評価点・結果の型 c は
    （係数体そのものが評価点になるとは限らないので）別々に受け取る *)
 let poly_eval_to_string (type a) (type c)
     (module P: CONVERTIBLE with type t = a)

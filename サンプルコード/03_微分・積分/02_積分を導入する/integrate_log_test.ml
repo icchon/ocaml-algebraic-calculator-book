@@ -8,11 +8,9 @@ let check p a =
   ] in
   Expr.put (Expr.integral_to_string "x" integrand
     (Expr.to_string_of (module Elementary_expr) r));
-  (* 検算: 微分すると元の p(x)*log(x-a) に戻るはず *)
-  let deriv = Elementary.differentiate r in
-  let target = Elementary.log_term (Elementary.of_poly (List.map Quadratic.of_rational p)) (Quadratic.of_rational a) in
-  let diff = Elementary.add deriv (Elementary.neg target) in
-  Expr.put (Expr.call "differentiate_check" [] (Expr.to_string_of (module Elementary_expr) diff))
+  (* 検算: 積分結果を微分すると、元の被積分関数に戻るはず *)
+  let diff = Expr.postfix_unop "'" Elementary.differentiate in
+  Expr.put (Expr.unop_to_string (module Elementary_expr) diff r)
 
 let () =
   (* log x (係数1) *)
@@ -22,4 +20,7 @@ let () =
   check [Rational.of_integer 3] (2, 1);
 
   (* x^2 log(x-1) (多項式係数) *)
-  check [Rational.zero; Rational.zero; Rational.one] (1, 1)
+  check [Rational.zero; Rational.zero; Rational.one] (1, 1);
+
+  (* (x+2) log(x+1) (多項式係数、1次) *)
+  check [Rational.of_integer 2; Rational.one] (-1, 1)
