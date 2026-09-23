@@ -30,8 +30,8 @@ let one: t = BasisMap.singleton PrimeSet.empty Coeff.one
 
 (* 加法 *)
 let add (v1 : t) (v2 : t) : t =
-  BasisMap.merge (fun _ key1 key2 ->
-    match key1, key2 with
+  BasisMap.merge (fun _ c1_opt c2_opt ->
+    match c1_opt, c2_opt with
     | None, None -> None
     | Some c, None | None, Some c -> Some c
     | Some c1, Some c2 -> Some (Coeff.add c1 c2)
@@ -83,6 +83,21 @@ let of_rational (q : Coeff.t) : t =
   if Coeff.equal q Coeff.zero then BasisMap.empty
   else BasisMap.singleton PrimeSet.empty q
 
+(* 無平方数を、素因数の集合に分解する *)
+let prime_factors (n : Integer.t) : PrimeSet.t =
+  let rec aux d remaining acc =
+    let d2 = Integer.mul d d in
+    if Integer.compare d2 remaining > 0 then
+      PrimeSet.add remaining acc
+    else
+      let (q, r) = Integer.div_rem remaining d in
+      if Integer.equal r Integer.zero then
+        aux (Integer.succ d) q (PrimeSet.add d acc)
+      else
+        aux (Integer.succ d) remaining acc
+  in
+  aux (Integer.succ Integer.one) n PrimeSet.empty
+
 (** 平方根 *)
 let of_rational_sqrt (q : Coeff.t) : t =
   if Coeff.equal q Coeff.zero then zero
@@ -90,7 +105,7 @@ let of_rational_sqrt (q : Coeff.t) : t =
     match Rational.try_sqrt q with
     | Ok r -> of_rational r
     | Error (square_free, coeff) ->
-        BasisMap.singleton (PrimeSet.singleton square_free) coeff
+        BasisMap.singleton (prime_factors square_free) coeff
 
 (* 正規化：係数が0になった基底を取り除く *)
 let normalize (v: t): t =
