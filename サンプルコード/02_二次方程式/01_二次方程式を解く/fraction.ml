@@ -50,7 +50,10 @@ module Make: FUNCTOR_TYPE = functor (R: Ring) -> struct
   let compare (n1, d1) (n2, d2) =
     R.compare (R.mul n1 d2) (R.mul n2 d1)
   (* 等価判定 *)
-  let equal x1 x2 = compare x1 x2 = 0
+  let equal x1 x2 =
+    let (n1, d1) = normalize x1 in
+    let (n2, d2) = normalize x2 in
+    R.equal n1 n2 && R.equal d1 d2
 
   include Mul_monoid.Extend(struct
     type nonrec t = t
